@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie</title>
+    <style th:replace="/admin/fragments/style"></style>
+    <div th:replace="/admin/fragments/script"></div>
+</head>
+<body>
+<div th:insert="~{/user/fragments/header :: userHeader}"></div>
+
+
+<div th:object="${movie}" class="content-wrapper" style="min-height: 1602px;margin-left: 0">
+    <div class="timeline-body">
+        <div class="embed-responsive embed-responsive-16by9" style="max-height: 700px">
+            <iframe width="1904" height="762" th:src="${youtubeLink}" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                            <div class="text-center">
+                                <img th:src="*{'/'+getMainImage()}" class=" img-fluid"  alt="User profile picture">
+                            </div>
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Date Of Release</b> <a th:text="*{getDateOfRelease()}" class="float-right"></a>
+                                </li>
+                            </ul>
+
+                            <a href="#" class="btn btn-primary btn-block"><b>Buy Ticket</b></a>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Date </th>
+                                                <th>Cinema Name</th>
+                                                <th>Hall Name</th>
+                                                <th style="width: 40px">Choose Ticket</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="sessionn:${sessions}" th:object="${sessionn}" th:id="${'tr'}+*{getSessionId()}" >
+                                                <td th:text="*{getDate()}"></td>
+                                                <td th:text="*{getHall().getCinema().getName()}"></td>
+                                                <td th:text="*{getHall().getName()}"></td>
+
+                                                <td>
+                                                    <form  th:action="@{/user/chooseTicket}">
+                                                        <input hidden th:value="*{getSessionId()}" name="sessionId">
+                                                        <button  class="btn btn-block btn-warning btn-flat">Choose Ticket</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <h3 th:text="*{getName()}" class="text-primary"></h3>
+                                    <div th:text="*{getDescription()}" class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                                    </div>
+                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div th:each="image, state:*{getImages()}" th:classappend="${state.index == 0} ? active"  class="carousel-item">
+                                                <img th:src="${'/'+image.getImage()}" class="d-block w-100" alt="...">
+                                            </div>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+
+</html>

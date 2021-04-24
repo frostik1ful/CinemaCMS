@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <style th:replace="/admin/fragments/style"></style>
+    <div th:replace="/admin/fragments/script"></div>
+</head>
+<body class="hold-transition register-page">
+<div th:each="error:${errors}">
+    <div  class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+        <div th:text="${error}"></div>
+    </div>
+</div>
+<div class="register-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a class="h1"><b>Cinema</b>CMS</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Register a new user</p>
+
+            <form action="/register" method="post">
+
+                <div class="input-group mb-3">
+                    <input type="text" minlength="6" required name="userName" class="form-control" placeholder="Nick name">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="email" required name="email" class="form-control" placeholder="Email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" required name="password" class="form-control" placeholder="Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" required name="confirmPassword" class="form-control" placeholder="Confirm password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-5">
+                <div class="card card-primary collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Additional info</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="text" name="firstName" class="form-control" placeholder="First name">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-user"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="text" name="lastName" class="form-control" placeholder="Last name">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-user"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" name="address" class="form-control" placeholder="Address">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-globe-americas"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" name="phone" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Phone">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-phone"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="number" name="cardNumber" class="form-control" placeholder="Credit card">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-credit-card"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label>Date Of BirthDay</label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input  type="text"  name="userDOB" class="form-control datetimepicker-input" data-target="#reservationdate">
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label  >Gender </label>
+                            <select   name="gender"  class="form-control custom-select" style="width: 100%;" >
+                                <option value="0" >Male</option>
+                                <option value="1" >Female</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label  >City </label>
+                            <select name="cityId"  class="form-control custom-select" style="width: 100%;" >
+                                <option th:each="city : ${cities}" th:value="${city.getCityId()}" th:text="${city.getName()}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label  >Language </label>
+                            <select name="languageId"  class="form-control custom-select" style="width: 100%;" >
+                                <option th:each="language : ${languages}" th:value="${language.getLanguageId()}" th:text="${language.getName()}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label >User type</label>
+                            <select name="userType"  class="form-control custom-select" style="width: 100%;" >
+                                <option value="0" >User</option>
+                                <option value="1" >Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+
+
+
+                <div class="row">
+
+                    <!-- /.col -->
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+
+
+            <a href="/login" class="text-center">I already have an account</a>
+        </div>
+        <!-- /.form-box -->
+    </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery
+<script src="../../plugins/jquery/jquery.min.js"></script>
+&lt;!&ndash; Bootstrap 4 &ndash;&gt;
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+&lt;!&ndash; AdminLTE App &ndash;&gt;
+<script src="../../dist/js/adminlte.min.js"></script>-->
+</body>
+</html>

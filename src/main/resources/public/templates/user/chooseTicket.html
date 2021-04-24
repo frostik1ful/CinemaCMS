@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose ticket</title>
+    <style th:replace="/admin/fragments/style"></style>
+    <div th:replace="/admin/fragments/script"></div>
+</head>
+<body>
+<div th:insert="~{/user/fragments/header :: userHeader}"></div>
+
+<div th:object="${sessionz}" class="content-wrapper" style="min-height: 1602px;margin-left: 0">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-primary card-outline">
+                        <div style="display: none" id="buyTicketBlock" class="card-body box-profile">
+                            <input hidden id="ticketIdToBuy" type="number">
+                            <p id="ticketPrice"></p>
+                            <button onclick="buyTicket()" class="btn btn-primary btn-block"><b>Buy Ticket</b></button>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div>
+                                    <div class="card-body">
+                                        <div class="childInCenter">
+                                            <div class="hallSchema" th:object="${sessionz}">
+                                                <div onclick="selectTicket(this)"  class="ticketBlock" th:id="${ticket.getTicketId()}" th:each="ticket:*{getTickets()}" th:classappend="${ticket.isPurchased()} ? purchased">
+                                                    <input type="number"  hidden th:value="${ticket.getTicketId()}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    function buyTicket() {
+        let ticketId = $('#buyTicketBlock').find('input').val()
+
+        let selectedTicket = $('#'+ticketId);
+
+        $.ajax({
+            url: '/user/buyTicket',
+            type: 'get',
+            data: {ticketId: ticketId},
+            success: function () {
+                $(selectedTicket).removeClass('selected');
+                $(selectedTicket).addClass('purchased');
+                $('#buyTicketBlock').hide();
+            }
+        })
+    }
+    function selectTicket(ticket) {
+        if (!$(ticket).hasClass('purchased')){
+            let tickets = $('.ticketBlock');
+
+            let ticketId = $(ticket).find("input").val();
+            let buyTicketBlock = $('#buyTicketBlock')
+            $(tickets).removeClass('selected');
+
+            $(ticket).addClass('selected');
+            $(buyTicketBlock).find('input').val(ticketId);
+            buyTicketBlock.show();
+        }
+
+
+    }
+</script>
+</body>
+</html>
